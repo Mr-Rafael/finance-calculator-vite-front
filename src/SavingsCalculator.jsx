@@ -1,5 +1,6 @@
 // SavingsCalculator.js
 import React, { useState } from 'react'
+import Button from './components/Button'
 
 function SavingsCalculator () {
   const [startingCapital, setStartingCapital] = useState(0)
@@ -137,13 +138,9 @@ function SavingsCalculator () {
               className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
             />
           </div>
-          <button
-            disabled={!isValid}
-            onClick={handleSubmit}
-            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition'
-          >
+          <Button disabled={!isValid} onClick={handleSubmit}>
             Submit
-          </button>
+          </Button>
         </div>
       }
       {response && (

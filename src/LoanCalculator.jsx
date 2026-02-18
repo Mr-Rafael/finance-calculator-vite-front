@@ -1,5 +1,9 @@
 // LoanCalculator.js
 import React, { useState } from 'react'
+import Button from './components/Button'
+import InputLabel from './components/InputLabel'
+import AmountInput from './components/AmountInput'
+import RateInput from './components/RateInput'
 
 function LoanCalculator () {
   const [startingPrincipal, setStartingPrincipal] = useState(0)
@@ -42,83 +46,80 @@ function LoanCalculator () {
   return (
     <div className='max-w-lg mx-auto p-6 bg-white shadow rounded'>
       {
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Loan Calculator</h2>
-          <div>
-            <label>Enter the starting principal:</label>
-          </div>
-          <div>
-            <input
-              type='number'
-              step='1000'
-              placeholder='Starting Principal'
-              value={startingPrincipal}
-              onChange={e => setStartingPrincipal(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>Enter the interest rate (APR):</label>
-          </div>
-          <div>
-            <input
-              type='text'
-              placeholder='Interest Rate (APR)'
-              value={yearlyInterestRate}
-              onChange={e => setYearlyInterestRate(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>Enter the monthly payments you will make:</label>
-          </div>
-          <div>
-            <input
-              type='number'
-              placeholder='Monthly Payment'
-              value={monthlyPayment}
-              onChange={e => setMOnthlyPayment(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>
-              Enter the total amount of additional monthly payments (insurance,
-              fees, etc.):
-            </label>
-          </div>
-          <div>
-            <input
-              type='number'
-              placeholder='Other Payments'
-              value={escrowPayment}
-              onChange={e => setEscrowPayment(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>Enter the start date of the loan:</label>
-          </div>
-          <div>
-            <input
-              type='date'
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <button
-            disabled={!isValid}
-            onClick={handleSubmit}
-            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition'
-          >
-            Submit
-          </button>
-        </div>
+        <main class='mx-auto'>
+          <section class='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+            <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+              Loan Calculator
+            </h2>
+            <form>
+              <div class='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
+                <div>
+                  <InputLabel>Enter the starting principal:</InputLabel>
+                  <AmountInput
+                    type='number'
+                    step='1000'
+                    placeholder='Starting Principal'
+                    value={startingPrincipal}
+                    onChange={e => setStartingPrincipal(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <label>Enter the interest rate (APR):</label>
+                  <RateInput
+                    type='text'
+                    placeholder='Interest Rate (APR)'
+                    value={yearlyInterestRate}
+                    onChange={e => setYearlyInterestRate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label>Enter the monthly payments you will make:</label>
+                  <AmountInput
+                    type='number'
+                    placeholder='Monthly Payment'
+                    value={monthlyPayment}
+                    onChange={e => setMOnthlyPayment(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <label>
+                    Enter the total amount of additional monthly payments
+                    (insurance, fees, etc.):
+                  </label>
+                  <AmountInput
+                    type='number'
+                    placeholder='Other Payments'
+                    value={escrowPayment}
+                    onChange={e => setEscrowPayment(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <label>Enter the start date of the loan:</label>
+                  <input
+                    type='date'
+                    value={startDate}
+                    onChange={e => setStartDate(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+              </div>
+              <div class='flex justify-end mt-6'>
+                <Button disabled={!isValid} onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </section>
+        </main>
       }
       {response && (
         <div className='mt-6'>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Payment Plan</h3>
+          <h3 className='text-xl font-semibold text-gray-700 mb-2'>
+            Payment Plan
+          </h3>
           <p>
             Your loan will be paid after {response.durationMonths} months (
             {response.durationMonths / 12} years).
