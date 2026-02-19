@@ -1,6 +1,9 @@
 // SavingsCalculator.js
 import React, { useState } from 'react'
 import Button from './components/Button'
+import InputLabel from './components/InputLabel'
+import AmountInput from './components/AmountInput'
+import RateInput from './components/RateInput'
 
 function SavingsCalculator () {
   const [startingCapital, setStartingCapital] = useState(0)
@@ -49,103 +52,109 @@ function SavingsCalculator () {
   return (
     <div className='max-w-lg mx-auto p-6 bg-white shadow rounded'>
       {
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Savings Calculator</h2>
-          <div>
-            <label>Enter your starting balance:</label>
-          </div>
-          <div>
-            <input
-              type='number'
-              step='1000'
-              placeholder='Starting Balance'
-              value={startingCapital}
-              onChange={e => setStartingCapital(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label>Enter the yearly interest rate on your account (APY):</label>
-          </div>
-          <div>
-            <input
-              type='text'
-              placeholder='Yearly Interest Rate'
-              value={yearlyInterestRate}
-              onChange={e => setYearlyInterestRate(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label>Enter the monthly contribution you will make:</label>
-          </div>
-          <div>
-            <input
-              type='number'
-              placeholder='Monthly Contribution'
-              value={monthlyContribution}
-              onChange={e => setMonthlyContribution(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label>Enter the term (or how many years to calculate)</label>
-          </div>
-          <div>
-            <input
-              type='number'
-              step='1'
-              placeholder='Duration (in years)'
-              value={durationYears}
-              onChange={e => setDurationYears(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>
-              Enter the income tax rate (or leave blank if none applies)
-            </label>
-          </div>
-          <div>
-            <input
-              type='text'
-              placeholder='Income tax rate'
-              value={taxRate}
-              onChange={e => setTaxRate(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>Enter the yearly inflation rate (or leave blank)</label>
-          </div>
-          <div>
-            <input
-              type='text'
-              placeholder='Yearly inflation rate'
-              value={yearlyInflationRate}
-              onChange={e => setYearlyInflationRate(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <div>
-            <label>Enter the start date</label>
-          </div>
-          <div>
-            <input
-              type='date'
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-          <Button disabled={!isValid} onClick={handleSubmit}>
-            Submit
-          </Button>
-        </div>
+        <main class='mx-auto'>
+          <section class='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+            <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+              Savings Calculator
+            </h2>
+            <form>
+              <div class='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
+                <div>
+                  <InputLabel>Enter your starting balance:</InputLabel>
+                  <AmountInput
+                    type='number'
+                    step='1000'
+                    placeholder='Starting Balance'
+                    value={startingCapital}
+                    onChange={e => setStartingCapital(e.target.value)}
+                    className='w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>
+                    Enter the yearly interest rate on your account (APY):
+                  </InputLabel>
+                  <input
+                    type='text'
+                    placeholder='Yearly Interest Rate'
+                    value={yearlyInterestRate}
+                    onChange={e => setYearlyInterestRate(e.target.value)}
+                    className='w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>
+                    Enter the monthly contribution you will make:
+                  </InputLabel>
+                  <AmountInput
+                    type='number'
+                    placeholder='Monthly Contribution'
+                    value={monthlyContribution}
+                    onChange={e => setMonthlyContribution(e.target.value)}
+                    className='w-full border border-gray-300 rounded px-3 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>
+                    Enter the term (or how many years to calculate)
+                  </InputLabel>
+                  <AmountInput
+                    type='number'
+                    step='1'
+                    placeholder='Duration (in years)'
+                    value={durationYears}
+                    onChange={e => setDurationYears(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>
+                    Enter the income tax rate (or leave blank if none applies)
+                  </InputLabel>
+                  <input
+                    type='text'
+                    placeholder='Income tax rate'
+                    value={taxRate}
+                    onChange={e => setTaxRate(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>
+                    Enter the yearly inflation rate (or leave blank)
+                  </InputLabel>
+                  <input
+                    type='text'
+                    placeholder='Yearly inflation rate'
+                    value={yearlyInflationRate}
+                    onChange={e => setYearlyInflationRate(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+                <div>
+                  <InputLabel>Enter the start date</InputLabel>
+                  <input
+                    type='date'
+                    value={startDate}
+                    onChange={e => setStartDate(e.target.value)}
+                    className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  />
+                </div>
+              </div>
+              <div class='flex justify-end mt-6'>
+                <Button disabled={!isValid} onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </section>
+        </main>
       }
       {response && (
         <div className='mt-6'>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Savings Plan</h3>
+          <h3 className='text-xl font-semibold text-gray-700 mb-2'>
+            Savings Plan
+          </h3>
           <p>Your monthly interest rate is: {response.monthlyInterestRate}.</p>
           <p>
             At the end of the term, you will have earned $
