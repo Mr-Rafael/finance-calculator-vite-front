@@ -20,7 +20,8 @@ function LoanCalculator () {
     escrowPayment &&
     startDate
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const payload = {
       startingPrincipal: Math.round(parseFloat(startingPrincipal) * 100), // convert to cents
       yearlyInterestRate, // keep as string
@@ -44,15 +45,15 @@ function LoanCalculator () {
   }
 
   return (
-    <div className='max-w-lg mx-auto p-6 bg-white shadow rounded'>
+    <div className='w-full'>
       {
-        <main class='mx-auto'>
-          <section class='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+        <main className='w-full'>
+          <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>
               Loan Calculator
             </h2>
             <form>
-              <div class='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
+              <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
                 <div>
                   <InputLabel>Enter the starting principal:</InputLabel>
                   <AmountInput
@@ -106,8 +107,8 @@ function LoanCalculator () {
                   />
                 </div>
               </div>
-              <div class='flex justify-end mt-6'>
-                <Button disabled={!isValid} onClick={handleSubmit}>
+              <div className='flex justify-end mt-6'>
+                <Button disabled={!isValid} type="button" onClick={handleSubmit}>
                   Submit
                 </Button>
               </div>
@@ -116,58 +117,82 @@ function LoanCalculator () {
         </main>
       }
       {response && (
-        <div className='mt-6'>
-          <h3 className='text-xl font-semibold text-gray-700 mb-2'>
-            Payment Plan
-          </h3>
-          <p>
-            Your loan will be paid after {response.durationMonths} months (
-            {response.durationMonths / 12} years).
-          </p>
-          <p>You will have paid a total of ${response.totalPaid / 100}.</p>
-          <p>
-            You will have spent a total of ${response.totalExpenditure / 100} in
-            interest and other expenditures.
-          </p>
-          <p>Your cost of credit was {response.costOfCreditPercent}%.</p>
-
-          <table className='w-full border-collapse border rounded overflow-hidden'>
-            <thead>
-              <tr className='bg-gray-100'>
-                <th className='border px-4 py-2 text-left'>Date</th>
-                <th className='border px-4 py-2 text-left'>Payment</th>
-                <th className='border px-4 py-2 text-left'>Interest Paid</th>
-                <th className='border px-4 py-2 text-left'>Escrow Payment</th>
-                <th className='border px-4 py-2 text-left'>Paydown</th>
-                <th className='border px-4 py-2 text-left'>Principal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {response.plan.map((row, idx) => (
-                <tr className='bg-gray-100' key={idx}>
-                  <td className='border px-4 py-2 text-left'>
-                    {new Date(row.date).toLocaleDateString()}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.payment / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.interest / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.escrowPayment / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.paydown / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.principal / 100}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <section className='container px-4 mx-auto'>
+          <div className='mt-6'>
+            <h3 className='text-xl font-semibold text-gray-700 mb-2'>
+              Payment Plan
+            </h3>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-300'>
+              Your loan will be paid after <b>{response.durationMonths}</b>{' '}
+              months ({response.durationMonths / 12} years).
+            </p>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-300'>
+              You will have paid a total of <b>${response.totalPaid / 100}</b>.
+            </p>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-300'>
+              You will have spent a total of{' '}
+              <b>${response.totalExpenditure / 100}</b> in interest and other
+              expenditures.
+            </p>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-300'>
+              Your cost of credit was <b>{response.costOfCreditPercent}%</b>.
+            </p>
+            <div className='flex flex-col mt-6'>
+              <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+                <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
+                  <div className='overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg'>
+                    <table className='w-full border-collapse border rounded overflow-hidden'>
+                      <thead className='bg-gray-50 dark:bg-gray-800'>
+                        <tr className='bg-gray-100'>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Date</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Payment
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Interest Paid
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Escrow Payment
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Paydown
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Principal
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
+                        {response.plan.map((row, idx) => (
+                          <tr key={idx}>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              {new Date(row.date).toLocaleDateString()}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.payment / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.interest / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.escrowPayment / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.paydown / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              <b>${row.principal / 100}</b>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   )

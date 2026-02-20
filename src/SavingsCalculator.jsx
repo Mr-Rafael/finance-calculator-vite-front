@@ -24,7 +24,8 @@ function SavingsCalculator () {
     yearlyInflationRate &&
     startDate
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const payload = {
       startingCapital: Math.round(parseFloat(startingCapital) * 100), // convert to cents
       yearlyInterestRate: yearlyInterestRate,
@@ -50,15 +51,15 @@ function SavingsCalculator () {
   }
 
   return (
-    <div className='max-w-lg mx-auto p-6 bg-white shadow rounded'>
+    <div className='w-full'>
       {
-        <main class='mx-auto'>
-          <section class='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+        <main className='w-full'>
+          <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>
               Savings Calculator
             </h2>
             <form>
-              <div class='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
+              <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
                 <div>
                   <InputLabel>Enter your starting balance:</InputLabel>
                   <AmountInput
@@ -141,8 +142,8 @@ function SavingsCalculator () {
                   />
                 </div>
               </div>
-              <div class='flex justify-end mt-6'>
-                <Button disabled={!isValid} onClick={handleSubmit}>
+              <div className='flex justify-end mt-6'>
+                <Button disabled={!isValid} type="button" onClick={handleSubmit}>
                   Submit
                 </Button>
               </div>
@@ -151,58 +152,80 @@ function SavingsCalculator () {
         </main>
       }
       {response && (
-        <div className='mt-6'>
-          <h3 className='text-xl font-semibold text-gray-700 mb-2'>
-            Savings Plan
-          </h3>
-          <p>Your monthly interest rate is: {response.monthlyInterestRate}.</p>
-          <p>
-            At the end of the term, you will have earned $
-            {response.totalEarnings / 100} in interest.
-          </p>
-          <p>Which represents a {response.rateOfReturn}% return.</p>
-          <p>
-            Adjusted to a {yearlyInflationRate}% yearly inflation, your return
-            is {response.inflationAdjustedROR}%.
-          </p>
-
-          <table className='w-full border-collapse border rounded overflow-hidden'>
-            <thead>
-              <tr className='bg-gray-100'>
-                <th className='border px-4 py-2 text-left'>Date</th>
-                <th className='border px-4 py-2 text-left'>Interest</th>
-                <th className='border px-4 py-2 text-left'>Tax</th>
-                <th className='border px-4 py-2 text-left'>Contribution</th>
-                <th className='border px-4 py-2 text-left'>Balance Increase</th>
-                <th className='border px-4 py-2 text-left'>Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {response.plan.map((row, idx) => (
-                <tr className='bg-gray-100' key={idx}>
-                  <td className='border px-4 py-2 text-left'>
-                    {new Date(row.date).toLocaleDateString()}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.interest / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.tax / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.contribution / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.increase / 100}
-                  </td>
-                  <td className='border px-4 py-2 text-left'>
-                    ${row.capital / 100}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <section className='container px-4 mx-auto'>
+          <div className='mt-6'>
+            <h3 className='text-xl font-semibold text-gray-700 mb-2'>
+              Savings Plan
+            </h3>
+            <p>
+              Your monthly interest rate is:{' '}
+              <b>{response.monthlyInterestRate}</b>.
+            </p>
+            <p>
+              At the end of the term, you will have earned{' '}
+              <b>${response.totalEarnings / 100}</b> in interest.
+            </p>
+            <p>
+              Which represents a <b>{response.rateOfReturn}</b>% return.
+            </p>
+            <p>
+              Adjusted to a <b>{yearlyInflationRate}%</b> yearly inflation, your
+              return is <b>{response.inflationAdjustedROR}</b>%.
+            </p>
+            <div className='flex flex-col mt-6'>
+              <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+                <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
+                  <div className='overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg'>
+                    <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
+                      <thead className='bg-gray-50 dark:bg-gray-800'>
+                        <tr>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Date</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Interest
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Tax</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Contribution
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Balance Increase
+                          </th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Balance
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
+                        {response.plan.map((row, idx) => (
+                          <tr key={idx}>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              {new Date(row.date).toLocaleDateString()}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.interest / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.tax / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.contribution / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              ${row.increase / 100}
+                            </td>
+                            <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
+                              <b>${row.capital / 100}</b>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   )
