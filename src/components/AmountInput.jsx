@@ -1,4 +1,4 @@
-export default function NumericInput({type, step, placeholder, value, onChange }) {
+export default function AmountInput({type, step, placeholder, value, onChange }) {
   return (
     <input
       type={type}
