@@ -13,7 +13,10 @@ function SavingsCalculator () {
   const [taxRate, setTaxRate] = useState('')
   const [yearlyInflationRate, setYearlyInflationRate] = useState('')
   const [startDate, setStartDate] = useState('')
+
   const [response, setResponse] = useState(null)
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(null)
 
   const isValid =
     startingCapital &&
@@ -24,7 +27,7 @@ function SavingsCalculator () {
     yearlyInflationRate &&
     startDate
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const payload = {
       startingCapital: Math.round(parseFloat(startingCapital) * 100), // convert to cents
@@ -37,16 +40,25 @@ function SavingsCalculator () {
     }
 
     try {
+      setLoading(true)
+      setError(null)
+      setResponse(null)
       console.log(payload)
       const res = await fetch('http://localhost:8080/app/savings/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-      const data = await res.json()
-      setResponse(data)
+      const result = await res.json()
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Request failed')
+      }
+      setResponse(result)
     } catch (err) {
-      console.error('Error:', err)
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -143,7 +155,11 @@ function SavingsCalculator () {
                 </div>
               </div>
               <div className='flex justify-end mt-6'>
-                <Button disabled={!isValid} type="button" onClick={handleSubmit}>
+                <Button
+                  disabled={!isValid}
+                  type='button'
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </div>
@@ -151,6 +167,8 @@ function SavingsCalculator () {
           </section>
         </main>
       }
+      {loading && <h3>Generating your savings plan...</h3>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {response && (
         <section className='container px-4 mx-auto'>
           <div className='mt-6'>
@@ -179,11 +197,15 @@ function SavingsCalculator () {
                     <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
                       <thead className='bg-gray-50 dark:bg-gray-800'>
                         <tr>
-                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Date</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Date
+                          </th>
                           <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                             Interest
                           </th>
-                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Tax</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Tax
+                          </th>
                           <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                             Contribution
                           </th>

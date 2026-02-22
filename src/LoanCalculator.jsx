@@ -11,7 +11,10 @@ function LoanCalculator () {
   const [monthlyPayment, setMOnthlyPayment] = useState(0)
   const [escrowPayment, setEscrowPayment] = useState(0)
   const [startDate, setStartDate] = useState('')
+
   const [response, setResponse] = useState(null)
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(null)
 
   const isValid =
     startingPrincipal &&
@@ -20,7 +23,7 @@ function LoanCalculator () {
     escrowPayment &&
     startDate
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const payload = {
       startingPrincipal: Math.round(parseFloat(startingPrincipal) * 100), // convert to cents
@@ -31,16 +34,25 @@ function LoanCalculator () {
     }
 
     try {
+      setLoading(true)
+      setError(null)
+      setResponse(null)
       console.log(payload)
       const res = await fetch('http://localhost:8080/app/loans/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-      const data = await res.json()
-      setResponse(data)
+      const result = await res.json()
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Request failed')
+      }
+      setResponse(result)
     } catch (err) {
-      console.error('Error:', err)
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -108,7 +120,11 @@ function LoanCalculator () {
                 </div>
               </div>
               <div className='flex justify-end mt-6'>
-                <Button disabled={!isValid} type="button" onClick={handleSubmit}>
+                <Button
+                  disabled={!isValid}
+                  type='button'
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </div>
@@ -116,6 +132,8 @@ function LoanCalculator () {
           </section>
         </main>
       }
+      {loading && <h3>Generating your payment plan...</h3>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {response && (
         <section className='container px-4 mx-auto'>
           <div className='mt-6'>
@@ -144,7 +162,9 @@ function LoanCalculator () {
                     <table className='w-full border-collapse border rounded overflow-hidden'>
                       <thead className='bg-gray-50 dark:bg-gray-800'>
                         <tr className='bg-gray-100'>
-                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>Date</th>
+                          <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                            Date
+                          </th>
                           <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                             Payment
                           </th>
