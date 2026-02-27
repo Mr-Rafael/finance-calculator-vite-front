@@ -172,7 +172,7 @@ function LoanCalculator () {
                             Interest Paid
                           </th>
                           <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
-                            Escrow Payment
+                            Other Payments
                           </th>
                           <th className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                             Paydown
@@ -195,7 +195,7 @@ function LoanCalculator () {
                               ${row.interest / 100}
                             </td>
                             <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
-                              ${row.escrowPayment / 100}
+                              ${row.otherPayments / 100}
                             </td>
                             <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
                               ${row.paydown / 100}
