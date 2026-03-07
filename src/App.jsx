@@ -1,25 +1,23 @@
 // App.js
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import LoanCalculator from "./LoanCalculator";
-import SavingsCalculator from "./SavingsCalculator";
+import { Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from './ProtectedRoute'
+import Login from './Login'
+import LoanCalculator from './LoanCalculator'
+import SavingsCalculator from './SavingsCalculator'
 
-function App() {
+function App () {
   return (
-    <Router>
-      <div style={{ padding: "20px" }}>
-        <nav>
-          <Link to="/loan" style={{ marginRight: "10px" }}>Loan Calculator</Link>
-          <Link to="/savings">Savings Calculator</Link>
-        </nav>
+    <Routes>
+      <Route path='/' element={<Navigate to='/login' />} />
 
-        <Routes>
-          <Route path="/loan" element={<LoanCalculator />} />
-          <Route path="/savings" element={<SavingsCalculator />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+      <Route path='/login' element={<Login />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route path='/loan' element={<LoanCalculator />} />
+        <Route path='/savings' element={<SavingsCalculator />} />
+      </Route>
+    </Routes>
+  )
 }
 
-export default App;
+export default App
