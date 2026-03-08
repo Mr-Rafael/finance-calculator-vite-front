@@ -57,9 +57,26 @@ function LoanCalculator () {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-screen'>
       {
         <main className='w-full'>
+          <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+            <nav className='bg-white shadow dark:bg-gray-800'>
+              <div className='container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300'>
+                <a
+                  className='text-gray-800 transition-colors duration-300 transform dark:text-gray-200 border-b-2 border-blue-500 mx-1.5 sm:mx-6'
+                  href='/savings'
+                >
+                  Savings Calculator
+                </a>
+                <a
+                  className='text-gray-800 transition-colors duration-300 transform dark:text-gray-200 border-b-2 border-blue-500 mx-1.5 sm:mx-6'
+                  href='/loan'>
+                  Loan Calculator
+                </a>
+              </div>
+            </nav>
+          </section>
           <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>
               Loan Calculator
@@ -71,7 +88,7 @@ function LoanCalculator () {
                   <AmountInput
                     type='number'
                     step='1000'
-                    placeholder='Starting Principal'
+                    placeholder='1000000'
                     value={startingPrincipal}
                     onChange={e => setStartingPrincipal(e.target.value)}
                     className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -81,7 +98,7 @@ function LoanCalculator () {
                   <label>Enter the interest rate (APR):</label>
                   <RateInput
                     type='text'
-                    placeholder='Interest Rate (APR)'
+                    placeholder='8'
                     value={yearlyInterestRate}
                     onChange={e => setYearlyInterestRate(e.target.value)}
                   />
@@ -90,7 +107,7 @@ function LoanCalculator () {
                   <label>Enter the monthly payments you will make:</label>
                   <AmountInput
                     type='number'
-                    placeholder='Monthly Payment'
+                    placeholder='10000'
                     value={monthlyPayment}
                     onChange={e => setMOnthlyPayment(e.target.value)}
                     className='w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'

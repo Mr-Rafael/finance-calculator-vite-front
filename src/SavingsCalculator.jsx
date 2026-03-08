@@ -63,9 +63,26 @@ function SavingsCalculator () {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-screen'>
       {
         <main className='w-full'>
+          <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
+            <nav className='bg-white shadow dark:bg-gray-800'>
+              <div className='container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300'>
+                <a
+                  className='text-gray-800 transition-colors duration-300 transform dark:text-gray-200 border-b-2 border-blue-500 mx-1.5 sm:mx-6'
+                  href='/savings'
+                >
+                  Savings Calculator
+                </a>
+                <a
+                  className='text-gray-800 transition-colors duration-300 transform dark:text-gray-200 border-b-2 border-blue-500 mx-1.5 sm:mx-6'
+                  href='/loan'>
+                  Loan Calculator
+                </a>
+              </div>
+            </nav>
+          </section>
           <section className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800'>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>
               Savings Calculator

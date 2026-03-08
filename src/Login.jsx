@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from './components/Button'
 import InputLabel from './components/InputLabel'
-import AmountInput from './components/AmountInput'
 import TextInput from './components/TextInput'
 
 export default function Login() {
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -15,20 +13,22 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:8080/login", {
+    const res = await fetch("http://localhost:8080/app/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       credentials: "include",
       body: JSON.stringify({
-        username,
+        email,
         password
       })
     });
 
     if (res.ok) {
-      navigate("/loan");
+      console.log("Login was successful. Navigating to savigs.")
+      localStorage.setItem("loggedIn", "true");
+      navigate("/savings");
     } else {
       alert("Login failed");
     }
@@ -43,12 +43,12 @@ export default function Login() {
                 <form>
                   <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1'>
                     <div>
-                      <InputLabel>Username:</InputLabel>
+                      <InputLabel>Email:</InputLabel>
                       <TextInput
                         type='text'
-                        placeholder='Username'
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        placeholder='email'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                       />
                     </div>
                     <div>
