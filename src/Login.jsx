@@ -26,8 +26,9 @@ export default function Login() {
     });
 
     if (res.ok) {
-      console.log("Login was successful. Navigating to savigs.")
-      localStorage.setItem("loggedIn", "true");
+      console.log("Login was successful. Navigating to savings.")
+      const data = await res.json()
+      localStorage.setItem("accessToken", data.access_token)
       navigate("/savings");
     } else {
       alert("Login failed");
