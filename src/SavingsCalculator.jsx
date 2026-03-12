@@ -4,6 +4,7 @@ import Button from './components/Button'
 import InputLabel from './components/InputLabel'
 import AmountInput from './components/AmountInput'
 import RateInput from './components/RateInput'
+import { apiFetch } from "./api"
 
 function SavingsCalculator () {
   const [startingCapital, setStartingCapital] = useState(0)
@@ -44,7 +45,7 @@ function SavingsCalculator () {
       setError(null)
       setResponse(null)
       console.log(payload)
-      const res = await fetch('http://localhost:8080/app/savings/calculate', {
+      const res = await apiFetch('/app/savings/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
